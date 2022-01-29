@@ -33,12 +33,21 @@ class User(db.Model):
                 'iat': datetime.datetime.utcnow(),
                 'sub': user_id
             }
+            print("payload")
+            print(payload)
+            print(app.config.get('SECRET_KEY'))
+            print(jwt.encode(
+                payload,
+                app.config.get('SECRET_KEY'),
+                algorithm='HS256'
+            ))
             return jwt.encode(
                 payload,
                 app.config.get('SECRET_KEY'),
                 algorithm='HS256'
             )
         except Exception as e:
+            print('errored')
             return e
 
     @staticmethod

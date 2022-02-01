@@ -1,5 +1,8 @@
 import os
 import sys
+import dotenv
+
+dotenv.load_dotenv()
 
 if os.environ.get('FLASK_COVERAGE'):
     import coverage
@@ -30,9 +33,12 @@ app.config.from_object(app_settings)
 
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
+if os.getenv("ENV") == "PROD":
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://tpocynlbojyyds:f95d0ea19807a96b0f4fbf1389d610414179b357d8e15d976ca58553d7cc77ed@ec2-52-20-143-167.compute-1.amazonaws.com:5432/d94rm99kbf4p0j"
 
 from project.server.models import User
 migrate = Migrate(app, db)
+
 
 @app.route("/")
 def root_site():
